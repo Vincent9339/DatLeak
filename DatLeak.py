@@ -15,7 +15,7 @@ detect_row_leakage(df_original, df_scrambled, ignore_value= value):
         row_scram = row_scram[1]
         valid_mask = (row_orig != ignore_value) & (row_scram != ignore_value)  
         
-        # Count matches where both values are valid (not ignore_value)
+       
         matches = (row_orig[valid_mask] == row_scram[valid_mask])
         match_count = matches.sum()
         matching_cells_per_row.append(match_count)

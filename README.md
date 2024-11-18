@@ -10,7 +10,7 @@ This script detects data leakage by comparing an original dataset with a scrambl
 ### Usage 
 
 ```
-python DatLeakArgs.py original_file scrambled_file [ignore_value]
+python DatLeak.py original_file scrambled_file [ignore_value]
 ```
 
 ### Example use

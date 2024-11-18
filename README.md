@@ -1,10 +1,10 @@
 # DatLeak
-Methods for detection of data leakage in dataset.
+Methods for detection of data leakage in a dataset.
 
 
-When using BIDSscramble, a tool designed to anonymize BIDS datasets by randomizing the data, it's important to implement safeguards against potential data leakage. Data leakage can occur if scrambled identifiers inadvertently retain patterns that could be traced back to original participants. Hence DatLeak can be run to test for data leakage. 
+When anonymizing data, for instance, by randomizing data orders, it's important to implement safeguards against potential data leakage. Data leakage can occur if scrambled variables inadvertently retain patterns that could be traced back to the original participants. Hence DatLeak can be run to test for data leakage. 
 
-This script detects data leakage by comparing an original dataset with a scrambled version. It calculates metrics like partial and full leakage percentages, average matching cells per row, and their standard deviation. The script accepts command-line inputs for the dataset files (CSV or TSV) and an optional ignore value.
+This script detects data leakage by comparing an original dataset with an anonymized version. It calculates percentages of full leakage (all variables are the same), and partial leakage (some variables are the same). In the latter case, it does so by averaging matching cells (per row). The script accepts command-line inputs for the dataset files (CSV or TSV) and an optional ignore value.
 
 
 ### Usage 

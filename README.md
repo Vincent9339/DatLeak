@@ -16,6 +16,14 @@ python DatLeak.py original_file scrambled_file [ignore_value]
 ### Example use
 
 ```
-python DatLeak.py data_original.csv data_scrambled.csv -999
+python DatLeak.py data_original.csv data_scramble.csv -999
 ```
 
+### Ouput 
+
+```
+Partial Leakage: 99.78%
+Full Leakage: 0.00%
+Average Matching Cells per Row: 4.98
+Standard Deviation of Matching Cells per Row: 1.68
+```

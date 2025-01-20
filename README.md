@@ -42,8 +42,7 @@ To calculate **Partial Leakage** as a percentage across all rows:
 \text{Partial Leakage Percentage} = \left( \frac{\text{Partial Leakage Count}}{\text{total\_rows}} \right) \times 100
 ```
 
-This formula checks if some, but not all, valid cells match between the original and scrambled rows, indicating partial leakage. The final percentage is derived by dividing the number of rows with partial leakage by the total number of rows.
-
+This formula checks if some, but not all, valid cells match between the original and scrambled rows, indicating partial leakage. 
 
 This script detects data leakage by comparing an original dataset with an anonymized version. It calculates percentages of full leakage (all variables are the same), and partial leakage (some variables are the same). In the latter case, it does so by averaging matching cells (per row). The script accepts command-line inputs for the dataset files (CSV or TSV) and an optional ignore value.
 

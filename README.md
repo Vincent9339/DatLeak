@@ -8,19 +8,19 @@ When anonymizing data, for instance, by randomizing data orders, it's important 
 
 A row is considered to have **full leakage** if the number of matching cells equals the number of valid cells in that row. The condition for full leakage for row $i$ is:
 
-$$
+$
 \text{Full Leakage for Row } i = 
 \begin{cases}
 1, & \text{if } \texttt{match\_count}\_i = \texttt{valid\_mask\_sum}\_i \\
 0, & \text{otherwise}
 \end{cases}
-$$
+$
 
 To calculate **Full Leakage** as a percentage across all rows:
 
-$$
+$
 \text{Full Leakage Percentage} = \left( \frac{\text{Full Leakage Count}}{\text{total\_rows}} \right) \times 100
-$$
+$
 
 This script detects data leakage by comparing an original dataset with an anonymized version. It calculates percentages of full leakage (all variables are the same), and partial leakage (some variables are the same). In the latter case, it does so by averaging matching cells (per row). The script accepts command-line inputs for the dataset files (CSV or TSV) and an optional ignore value.
 

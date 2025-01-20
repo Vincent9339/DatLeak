@@ -6,7 +6,7 @@ When anonymizing data, for instance, by randomizing data orders, it's important 
 
 ### Full Leakage Formula
 
-A row is considered to have **full leakage** if the number of matching cells equals the number of valid cells in that row. The condition for full leakage for row `i` is:
+A row is considered to have **full leakage** if the number of matching cells equals the number of valid cells in that row. The condition for full leakage for row $i$ is:
 
 $$
 \text{Full Leakage for Row } i = 

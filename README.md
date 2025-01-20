@@ -22,7 +22,7 @@ A row $i$ is considered to have **full leakage** if the number of matching cells
 
 ### Partial Leakage
 
-A row is considered to have **partial leakage** if the number of matching cells is greater than 0 but less than the number of valid cells in that row. The condition for partial leakage for row `i` is:
+A row $i$ is considered to have **partial leakage** if the number of matching cells is greater than 0 but less than the number of valid cells in that row. The condition for partial leakage for row `i` is:
 
 ```math
 \text{Partial Leakage for Row } i = 

@@ -16,10 +16,6 @@ A row is considered to have **full leakage** if the number of matching cells equ
 0, & \text{otherwise}
 \end{cases}
 ```
-
-To calculate **Full Leakage** as a percentage across all rows:
-
-
 ```math
 \text{Full Leakage Percentage} = \left( \frac{\text{Full Leakage Count}}{\text{total\_rows}} \right) \times 100
 ```
@@ -35,9 +31,6 @@ A row is considered to have **partial leakage** if the number of matching cells 
 0, & \text{otherwise}
 \end{cases}
 ```
-
-To calculate **Partial Leakage** as a percentage across all rows:
-
 ```math
 \text{Partial Leakage Percentage} = \left( \frac{\text{Partial Leakage Count}}{\text{total\_rows}} \right) \times 100
 ```
@@ -46,12 +39,19 @@ This formula checks if some, but not all, valid cells match between the original
 
 This script detects data leakage by comparing an original dataset with an anonymized version. It calculates percentages of full leakage (all variables are the same), and partial leakage (some variables are the same). In the latter case, it does so by averaging matching cells (per row). The script accepts command-line inputs for the dataset files (CSV or TSV) and an optional ignore value.
 
+### Requirements
+- pandas
+- numpy
+- python 3.x
 
 ### Usage 
 
 ```
 python DatLeak.py original_file scrambled_file [ignore_value]
 ```
+- <original_file>: Path to the CSV or TSV file containing the original data.
+- <scrambled_file>: Path to the CSV or TSV file containing the scrambled data.
+- [ignore_value]: A value to ignore during the comparison (e.g., NaN or any placeholder value).
 
 ### Example use
 
@@ -67,3 +67,7 @@ Full Leakage: 0.00%
 Average Matching Cells per Row: 4.98
 Standard Deviation of Matching Cells per Row: 1.68
 ```
+- Partial Leakage: The percentage of rows with partial leakage.
+- Full Leakage: The percentage of rows with full leakage.
+- Average Matching cells per row.
+- Standard Deviation of matching cells per row.

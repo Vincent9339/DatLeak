@@ -11,7 +11,7 @@ A row is considered to have **full leakage** if the number of matching cells equ
 $$
 \text{Full Leakage for Row } i = 
 \begin{cases}
-1, & \text{if } \text{match\_count}\_i = \text{valid\_mask\_sum}\_i \\
+1, & \text{if } \texttt{match\_count}\_i = \texttt{valid\_mask\_sum}\_i \\
 0, & \text{otherwise}
 \end{cases}
 $$

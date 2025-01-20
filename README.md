@@ -12,7 +12,7 @@ A row is considered to have **full leakage** if the number of matching cells equ
 ```math
 \text{Full Leakage for Row } i = 
 \begin{cases}
-1, & \text{if } \text{match\_count}_{i} = \text{valid\_mask\_sum}_{i} 
+1, & \text{if } \text{match\_count}_{i} = \text{valid\_mask\_sum}_{i} \\
 0, & \text{otherwise}
 \end{cases}
 ```
@@ -27,7 +27,7 @@ A row is considered to have **partial leakage** if the number of matching cells 
 ```math
 \text{Partial Leakage for Row } i = 
 \begin{cases}
-1, & \text{if } 0 < \text{match\_count}_{i} < \text{valid\_mask\_sum}_{i} 
+1, & \text{if } 0 < \text{match\_count}_{i} < \text{valid\_mask\_sum}_{i} \\
 0, & \text{otherwise}
 \end{cases}
 ```

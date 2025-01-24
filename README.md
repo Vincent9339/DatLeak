@@ -56,7 +56,7 @@ python DatLeak.py original_file scrambled_file [ignore_value]
 ### Example use
 
 ```
-python DatLeak.py data_original.csv data_scramble.csv -999
+python DatLeak.py test_files/data_original.tsv test_files/data_scramble.tsv -999
 ```
 
 ### Ouput 

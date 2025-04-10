@@ -74,7 +74,9 @@ def detect_row_leakage(df_original, df_scrambled, ignore_value=None, ignore_col=
         except Exception as e:
             print(f" - Error calculating final metrics: {str(e)}")
             return None
-
+            
+        if full_leakage_percentage > 0:
+            print(f" - NOTICE: Privacy is not preserved. Please consider re-scramble/re-noise your data.\n") 
         return partial_leakage_percentage, full_leakage_percentage, avg_matching_cells_per_row, std_matching_cells_per_row
 
     except Exception as e:
@@ -108,14 +110,14 @@ if __name__ == "__main__":
         metrics = detect_row_leakage(original_df, scrambled_df, ignore_value, ignore_col)
         if metrics:
             partial_leakage, full_leakage, avg_match, std_match = metrics
-            print(f"Full Leakage (identical row/participant): {full_leakage:.2f}%")
-            print(f"Partial Leakage (rows/participants have data partially identical): {partial_leakage:.2f}%")
-            print(f"Average portion of row/participants that are identical: {avg_match:.2f}")
-            print(f"Standard Deviationof row/participants that are identical: {std_match:.2f}")
+            print(f" - Full Leakage (identical row/participant): {full_leakage:.2f}%")
+            print(f" - Partial Leakage (rows/participants have data partially identical): {partial_leakage:.2f}%")
+            print(f" - Average portion of row/participants that are identical: {avg_match:.2f}")
+            print(f" - Standard Deviationof row/participants that are identical: {std_match:.2f}")
         else:
             print(" - Error: Could not calculate leakage metrics")
             sys.exit(1)
 
     except Exception as e:
-        print(f"Unexpected error in main execution: {str(e)}")
+        print(f"- Unexpected error in main execution: {str(e)}")
         sys.exit(1)

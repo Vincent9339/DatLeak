@@ -47,17 +47,23 @@ This script detects data leakage by comparing an original dataset with an anonym
 ### Usage 
 
 ```
-python DatLeak.py original_file scrambled_file [ignore_value]
+python DatLeak.py <original_file> <scrambled_file> [ignore_value] [ignore_col]
 ```
 - <original_file>: Path to the CSV or TSV file containing the original data.
 - <scrambled_file>: Path to the CSV or TSV file containing the scrambled data.
 - [ignore_value]: A value to ignore during the comparison (e.g., NaN or any placeholder value).
+- [ignore_col]: A column to ignore during the comparison (ignore_col can be a single integer (e.g., 1) or comma-separated list (e.g., '1,2,3') or list literal (e.g., '[1,2,3]')).
 
 ### Example use
 
 ```
-python DatLeak.py test_files/data_original.tsv test_files/data_scramble.tsv -999
+python DatLeak.py test_files/data_original.tsv test_files/data_scramble.tsv -999 0
+# or
+python DatLeak.py test_files/data_original.tsv test_files/data_scramble.tsv None 0
+# even
+python DatLeak.py test_files/data_original.tsv test_files/data_scramble.tsv
 ```
+
 
 ### Ouput 
 

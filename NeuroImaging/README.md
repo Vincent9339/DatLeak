@@ -1,7 +1,7 @@
 # DataLeak
 
 ## Table of Contents
-- [Introduction](#introduction)
+
 - [Purpose](#purpose)
 - [Methods](#methods)
   - [Pseudocode](#pseudocode)
@@ -10,9 +10,6 @@
   - [Full/Partial Leakage Calculation](#fullpartial-leakage-calculation)
 - [HTML report](#html-report)
 - [License](#license)
-
-## Introduction
-**Da**ta **Le**akage analysis in neuro-imaging data
 
 ## Purpose
 The purpose of this repository is to analyze information leakage in two neuro-imaging dataset of **Original** and **Scrambled/Synthetic**. We use 3 known methods to measure the similarity between slices by quantifying leakage across all dimensions of the image.

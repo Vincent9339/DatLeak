@@ -188,7 +188,8 @@ From these matrices, Partial Leakage is computed based on the specified threshol
   \end{matrix}
 \right.
 ```
-
+# NOTE[WILL BE EDITED]:
+in case of MEG file, the floating percision is set to 1e-10. Briefly saying np.allclose(Original,Scrambled,atol=1e-10)
 ## HTML Report
 To ensure transparency and verification, and allow for visual inspection of the results, an optional HTML report is generated alongside the leakage analysis. This report provides:
 

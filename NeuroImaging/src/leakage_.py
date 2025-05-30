@@ -66,9 +66,10 @@ def leakage_(data_o: np.ndarray, data_s: np.ndarray, axis: int) -> float:
                 f_l_corrs[i, j] = np.allclose(slice_o, slice_s)    
     return p_corrs, s_corrs, f_l_corrs
 
+    
 
 @njit(parallel=True)
-def spatiotemp_leakage_(data_o: np.ndarray, data_s: np.ndarray) -> float:
+def leakage_2D(data_o: np.ndarray, data_s: np.ndarray) -> float:
     shape = data_o.shape[0]
     p_corrs = np.full(shape, np.nan)
     s_corrs = np.full(shape, np.nan)
@@ -117,7 +118,7 @@ def spatiotemp_leakage_(data_o: np.ndarray, data_s: np.ndarray) -> float:
             #print("found zero vectors. ",i)
             pass
         else:
-            f_l_corrs[i] = np.allclose(cube_o, cube_s)  
+            f_l_corrs[i] = np.allclose(cube_o, cube_s, atol=1e-11) # by default atol=1e-08  
     return p_corrs, s_corrs,f_l_corrs
 
 

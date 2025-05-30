@@ -196,7 +196,7 @@ def report(top_image_paths, bottom_image_paths, output_html="report_embedded.htm
         <div class="stats-container">
             <div class="stats">
                 <h3>Result:</h3>
-                <p><strong>Full leakage:</strong> {full_leakage:.2f}%</p>
+                <p><strong>Full leakage:</strong> {'True' if full_leakage else 'False'}</p>
                 <p><strong>Partial leakage:</strong> {partial_leakage:.2f}%</p>
                 <p><strong>Pearson Correlation:</strong></p>
                 <div class="leakage-details">

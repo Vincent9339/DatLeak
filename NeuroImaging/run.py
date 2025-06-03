@@ -14,7 +14,9 @@ from src.leakage_ import *
 logger = setup_logging()
 
 def main(original_path, scrambled_path, subject_name,task=None, run_=None, Dim4 = False,r=False):
-
+    
+    r = False if r == "False" else True
+    
     ext = original_path.split("/")[-1]
     if ext.endswith(".nii") or ext.endswith(".nii.gz"):
         original = nii_reader(original_path).get_data()
@@ -62,7 +64,16 @@ def main(original_path, scrambled_path, subject_name,task=None, run_=None, Dim4 
 
 
     elif ext.endswith(".fif") or ext.endswith(".fif.gz") or ext.endswith(".vhdr") or ext.endswith(".vhdr.gz"):
-        print(f"TASK! viz not implemented!")
+        import mne
+        d = mne.io.read_raw_fif(original_path, preload=True)
+        psd = d.compute_psd(method='welch', fmin=1, fmax=100)  
+        viz_psd(psd, type_="original")
+        d = None
+        d = mne.io.read_raw_fif(scrambled_path, preload=True)
+        psd = d.compute_psd(method='welch', fmin=1, fmax=100)  
+        viz_psd(psd, type_="scrambled")
+        d = None
+    
     else: print(f" - Unsupported file type.")
     #########################################
     #             SPATIAL ANALYSIS          #
@@ -101,7 +112,7 @@ def main(original_path, scrambled_path, subject_name,task=None, run_=None, Dim4 
                 print(f"\t - Dimension[{axis.upper()}]: \tFull Leakage: {left}/{right} slices\tPartial Leakage: {round(max_p_l, 2)}") # \tIdentical: {round(ffl, 2)}%
             if not Dim4:
                 print(f"\t - Dimension[{axis.upper()}]: \tFull Leakage: {left}/{right} slices\tPartial Leakage: {round(max_p_l, 2)}") # \tIdentical: {round(ffl, 2)}%
-            viz_report(p_corrs, s_corrs, f_l_corrs,loop=i)
+            viz_report(p_corrs, s_corrs, f_l_corrs,loop=i, file_shape=original.shape)
        
     #########################################
     #             SPATIOTEMPORAL            #
@@ -117,7 +128,7 @@ def main(original_path, scrambled_path, subject_name,task=None, run_=None, Dim4 
             #identical = (np.argwhere(f_l_corrs >= .99999).shape[0] / f_l_corrs.shape[0]) * 100
             print(f"\t - SpatioTemporal: \tFull Leakage: {np.argwhere(p_corrs >= .99999).shape[0]}/{p_corrs.shape[0]} cubes \tPartial Leakage {partial_leakage}") # \tIdentical: {identical}%
         
-            viz_spatiotemporal(p_corrs, s_corrs,f_l_corrs)
+            viz_spatiotemporal(p_corrs, s_corrs,f_l_corrs, file_shape=original.shape)
     #########################################
     #             FIF                       #
     #########################################
@@ -145,11 +156,11 @@ def main(original_path, scrambled_path, subject_name,task=None, run_=None, Dim4 
     #########################################
     #             REPORT                    #
     #########################################
-
+    
     if r:
-        
         report_output = subject_name +"_"+ task +"_"+ run_ if task else subject_name
-        report(
+        if ext.endswith(".nii") or ext.endswith(".nii.gz"):
+            report(
             top_image_paths=[
                 "img/original.png",
                 "img/scrambled.png"
@@ -192,6 +203,8 @@ def main(original_path, scrambled_path, subject_name,task=None, run_=None, Dim4 
            s_leakage_z_avg=np.mean(results["z"]["s_corr_pl_avg"]),           
            full_leakage=fl
         )
+    
+    if ext.endswith(".fif") or ext.endswith(".fif.gz"):    
       
     return np.round(pl,2),fl
 
@@ -259,7 +272,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
  
-    usecase = 2.2
+    usecase = 2.3
     if usecase == None:
         orig = sys.argv[1]
         scra = sys.argv[2]

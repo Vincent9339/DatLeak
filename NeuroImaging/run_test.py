@@ -69,29 +69,60 @@ def main(original_path, scrambled_path, subject_name,task=None, run_=None, Dim4 
     #########################################
     if ext.endswith(".nii") or ext.endswith(".nii.gz"):
         print(f" - Full-volume Spatiotemporal Analysis")
+        
         for i, axis in enumerate(axes):
             if Dim4:
+                replaced = list()
+                random_replace = False
+
+                if random_replace:
+                    range_ = 5
+                    if axis == "x":
+                        for _ in range(range_):
+                            idx = random.randint(10, list(original.shape)[i] - 10) # 
+                            scrambled[idx, :, :, :] = original[idx, :, :, :]
+                            replaced.append(idx)
+                    elif axis == "y":
+                        for _ in range(range_):
+                            idx = random.randint(10, list(original.shape)[i] - 10)
+                            scrambled[:, idx, :, :] = original[:, idx, :, :]
+                            replaced.append(idx)
+                    elif axis == "z":
+                        for _ in range(range_):
+                            idx = random.randint(10, list(original.shape)[i] - 10)
+                            scrambled[:, :, idx, :] = original[:, :, idx, :]
+                            replaced.append(idx)
+                    elif axis == "t":
+                        for _ in range(range_):
+                            idx = random.randint(10, list(original.shape)[i] - 10)
+                            scrambled[:, :, :, idx] = original[:, :, :, idx]
+                            replaced.append(idx)
+                if random_replace:
+                    print(f"\t - Replaced indices in {axis}: {replaced}")
                 logger.info(f"SpatioTemporal Leakage Analysis on 'func'")
                 p_corrs, s_corrs, f_l_corrs = leakage_4D(original, scrambled, axis=i)
             if not Dim4:
+                replaced = list()
                 random_replace = False
                 if random_replace:
                     range_ = 5
                     if axis == "x":
-                    
                         for _ in range(range_):
-                            idx = random.randint(20, 120)
+                            idx = random.randint(10, list(original.shape)[i] - 10)
                             scrambled[idx, :, :] = original[idx, :, :]
-                    
+                            replaced.append(idx)
                     elif axis == "y":
                         for _ in range(range_):
-                            idx = random.randint(20, 120)
+                            idx = random.randint(10, list(original.shape)[i] - 10)
                             scrambled[:, idx, :] = original[:, idx, :]
-                    
+                            replaced.append(idx)
                     elif axis == "z":
                         for _ in range(range_):
-                            idx = random.randint(20, 120)
+                            idx = random.randint(10, list(original.shape)[i] - 10)
                             scrambled[:, :, idx] = original[:, :, idx]
+                            replaced.append(idx)
+                if random_replace:
+                    print(f"\t - Replaced indices in {axis}: {replaced}")
                 logger.info(f"Spatial Leakage Analysis on 'anat'")
                 p_corrs, s_corrs, f_l_corrs = leakage_(original, scrambled, axis=i)
             pfl, avg_p_l, min_p_l, max_p_l = summary(p_corrs)
@@ -119,7 +150,7 @@ def main(original_path, scrambled_path, subject_name,task=None, run_=None, Dim4 
                 print(f"\t - Dimension[{axis.upper()}]: \tFull Leakage: {left}/{right} slices\tPartial Leakage: {round(max_p_l, 2)}") # \tIdentical: {round(ffl, 2)}%
             if not Dim4:
                 print(f"\t - Dimension[{axis.upper()}]: \tFull Leakage: {left}/{right} slices\tPartial Leakage: {round(max_p_l, 2)}") # \tIdentical: {round(ffl, 2)}%
-            viz_report(p_corrs, s_corrs, f_l_corrs,loop=i)
+            viz_report(p_corrs, s_corrs, f_l_corrs,loop=i, file_shape=original.shape)
        
     #########################################
     #             SPATIOTEMPORAL            #
@@ -135,7 +166,7 @@ def main(original_path, scrambled_path, subject_name,task=None, run_=None, Dim4 
             #identical = (np.argwhere(f_l_corrs >= .99999).shape[0] / f_l_corrs.shape[0]) * 100
             print(f"\t - SpatioTemporal: \tFull Leakage: {np.argwhere(p_corrs >= .99999).shape[0]}/{p_corrs.shape[0]} cubes \tPartial Leakage {partial_leakage}") # \tIdentical: {identical}%
         
-            viz_spatiotemporal(p_corrs, s_corrs,f_l_corrs)
+            viz_spatiotemporal(p_corrs, s_corrs,f_l_corrs, file_shape=original.shape)
     #########################################
     #             FIF                       #
     #########################################

@@ -27,7 +27,7 @@ jobs:
       - name: Build Container
         run: |
           cd apptainer
-          apptainer build ../dataleak.sif dataleak.def
+          apptainer build --sandbox ../dataleak.sif dataleak.def
 
       - name: Login to GHCR  
         run: |  

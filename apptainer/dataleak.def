@@ -7,9 +7,9 @@ From: python:3.11-slim
         apptainer run dataleak.sif <Base-input original> <Base-input scrambled> [False/True]"
 
 %files
-    ./run.py /app/run.py
-    ./src /app/src
-    ./requirements.txt /app/requirements.txt
+    ./NeuroImaging/run.py /app/run.py
+    ./NeuroImaging/src /app/src
+    ./NeuroImaging/requirements.txt /app/requirements.txt
 
 %post
     apt-get update && apt-get install -y --no-install-recommends \

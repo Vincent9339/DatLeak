@@ -28,19 +28,14 @@ jobs:
           cd apptainer
           apptainer build ../dataleak.sif dataleak.def
 
-      - name: Login to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to GHCR  
+        run: |  
+          echo "${{ secrets.APPTAINER_GHCR_TOKEN }}" | apptainer remote login --username ${{ github.repository_owner }} --password-stdin ghcr.io  
+      
+      - name: Push to GHCR  
+        run: |  
+          apptainer push dataleak.sif oras://ghcr.io/${{ github.repository_owner }}/dataleak:latest  
 
-      - name: Push to GHCR
-        run: |
-          # Push with ORAS
-          apptainer push dataleak.sif oras://ghcr.io/${{github.repository_owner}}/dataleak:latest
-
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            TAG=${GITHUB_REF#refs/tags/}
-            apptainer push dataleak.sif oras://ghcr.io/${{github.repository_owner}}/dataleak:$TAG
-          fi
+      - name: Push to Sylabs (Optional)  
+        run: |  
+          apptainer push dataleak.sif library://vincent9339/project/dataleak:latest  

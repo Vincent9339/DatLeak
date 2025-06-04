@@ -1,6 +1,6 @@
 name: Build and Push to GHCR
 env:
-  GHCR_TOKEN: ${{secrets.DATALEAK_TOKEN}} 
+  GHCR_TOKEN: ${{secrets.GHCR_TOKEN}} 
 on:
   push:
     branches: ["main"]
@@ -31,7 +31,7 @@ jobs:
 
       - name: Login to GHCR  
         run: |  
-          echo "${{secrets.DATALEAK_TOKEN}}" | apptainer remote login --username ${{ github.repository_owner }} --password-stdin ghcr.io  
+          echo "${{secrets.GHCR_TOKEN}}" | apptainer remote login --username ${{ github.repository_owner }} --password-stdin ghcr.io  
       
       - name: Push to GHCR  
         run: |  

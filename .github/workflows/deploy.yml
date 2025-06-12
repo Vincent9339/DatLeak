@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Apptainer from Source
+      - name: Install Dependencies (excluding Go)
         run: |
           sudo apt-get update && sudo apt-get install -y \
             build-essential \
@@ -32,9 +32,9 @@ jobs:
             uuid-dev \
             libgpgme-dev \
             libglib2.0-dev \
-            libseccomp-dev \
             libselinux1-dev \
-            go
+            libzstd-dev \
+            python3-pip
 
       - name: Install Go
         run: |
@@ -43,32 +43,36 @@ jobs:
           echo "/usr/local/go/bin" >> $GITHUB_PATH
           echo "$HOME/go/bin" >> $GITHUB_PATH
 
-      - name: Build Apptainer from Source
+      - name: Build and Install Apptainer
         run: |
-          export PATH=/usr/local/go/bin:$PATH
+          export PATH="/usr/local/go/bin:$PATH"
           git clone https://github.com/apptainer/apptainer.git
           cd apptainer
           git checkout v1.3.0
-          ./mconfig && \
-          make -C builddir && \
+          ./mconfig
+          make -C builddir
           sudo make -C builddir install
+          echo "/usr/local/bin" >> $GITHUB_PATH  
           apptainer version
 
-      - name: Build SIF Image 
+      - name: Build SIF Image
         run: |
-          export PATH=/usr/local/go/bin:$PATH
+          export PATH="/usr/local/bin:/usr/local/go/bin:$PATH"
           apptainer build dataleak.sif apptainer/dataleak.def
 
       - name: Login to GHCR
         run: |
+          export PATH="/usr/local/bin:$PATH"
           echo "${{ secrets.GHCR_TOKEN }}" | apptainer remote login \
             --username "${{ github.repository_owner }}" \
             --password-stdin ghcr.io
 
       - name: Push to GHCR
         run: |
+          export PATH="/usr/local/bin:$PATH"
           apptainer push dataleak.sif oras://ghcr.io/${{ github.repository_owner }}/dataleak:latest
 
       - name: Push to Sylabs (optional)
         run: |
+          export PATH="/usr/local/bin:$PATH"
           apptainer push dataleak.sif library://vincent9339/project/dataleak:latest

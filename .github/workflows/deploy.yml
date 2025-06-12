@@ -24,7 +24,7 @@ jobs:
 
       - name: Build Apptainer Image (.sif)
         run: |
-          apptainer build ../dataleak.sif ../apptainer/dataleak.def
+          apptainer build dataleak.sif ./apptainer/dataleak.def
 
       - name: Login to GHCR
         run: |

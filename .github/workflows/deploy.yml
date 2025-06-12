@@ -46,14 +46,16 @@ jobs:
       - name: Build and Install Apptainer
         run: |
           export PATH="/usr/local/go/bin:$PATH"
+          rm -rf apptainer
           git clone https://github.com/apptainer/apptainer.git
           cd apptainer
           git checkout v1.3.0
           ./mconfig
           make -C builddir
           sudo make -C builddir install
-          echo "/usr/local/bin" >> $GITHUB_PATH  
+          echo "/usr/local/bin" >> $GITHUB_PATH
           apptainer version
+
 
       - name: Build SIF Image
         run: |

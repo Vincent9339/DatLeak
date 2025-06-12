@@ -13,17 +13,49 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    container:
-      image: quay.io/apptainer/apptainer:v1.3.0  
-
     permissions:
       packages: write
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build Apptainer Image (.sif)
+      - name: Install Apptainer from Source
         run: |
+          sudo apt-get update && sudo apt-get install -y \
+            build-essential \
+            libseccomp-dev \
+            pkg-config \
+            squashfs-tools \
+            cryptsetup \
+            wget \
+            git \
+            uuid-dev \
+            libgpgme-dev \
+            libglib2.0-dev \
+            libseccomp-dev \
+            libselinux1-dev \
+            go
+
+          # Install Go manually (Apptainer needs Go >= 1.18)
+          wget https://go.dev/dl/go1.21.4.linux-amd64.tar.gz
+          sudo tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
+          echo 'export PATH=/usr/local/go/bin:$PATH' >> $GITHUB_ENV
+          echo 'export PATH=$HOME/go/bin:$PATH' >> $GITHUB_ENV
+
+      - name: Build Apptainer from Source
+        run: |
+          export PATH=/usr/local/go/bin:$PATH
+          git clone https://github.com/apptainer/apptainer.git
+          cd apptainer
+          git checkout v1.3.0
+          ./mconfig && \
+          make -C builddir && \
+          sudo make -C builddir install
+          apptainer version
+
+      - name: Build SIF Image 
+        run: |
+          export PATH=/usr/local/go/bin:$PATH
           apptainer build dataleak.sif apptainer/dataleak.def
 
       - name: Login to GHCR
@@ -35,3 +67,7 @@ jobs:
       - name: Push to GHCR
         run: |
           apptainer push dataleak.sif oras://ghcr.io/${{ github.repository_owner }}/dataleak:latest
+
+      - name: Push to Sylabs (optional)
+        run: |
+          apptainer push dataleak.sif library://vincent9339/project/dataleak:latest

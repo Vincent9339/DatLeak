@@ -11,20 +11,20 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-
-    permissions:
-      packages: write
+    runs-on: ubuntu-latest 
 
     container:
       image: quay.io/singularity/singularity:v3.10.0
+
+    permissions:
+      packages: write
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Build Apptainer Image (.sif)
         run: |
-          apptainer build ../dataleak.sif ./apptainer/dataleak.def
+          apptainer build dataleak.sif apptainer/dataleak.def
 
       - name: Login to GHCR
         run: |
@@ -35,4 +35,3 @@ jobs:
       - name: Push to GHCR
         run: |
           apptainer push dataleak.sif oras://ghcr.io/${{ github.repository_owner }}/dataleak:latest
-          
